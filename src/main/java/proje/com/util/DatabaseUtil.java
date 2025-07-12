@@ -1,3 +1,5 @@
+// PostgreSQL veritabanına JDBC ile bağlanıp kullanıcı ve kart bilgilerini kaydeder.
+// Tüm veritabanı işlemleri merkezi olarak burada yönetilir.
 package proje.com.util;
 
 import proje.com.model.User;
@@ -7,10 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseUtil {
+    // Veritabanı bağlantı bilgileri
     private static final String URL = "jdbc:postgresql://localhost:5432/testdb";
     private static final String USER = "testuser";
     private static final String PASSWORD = "testpass";
 
+    // Kullanıcıyı veritabanına ekler
     public static void insertUser(User user) {
         String sql = "INSERT INTO users (title, name, email, password, birth_day, birth_month, birth_year, first_name, last_name, company, address1, address2, country, state, city, zipcode, mobile_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -38,6 +42,7 @@ public class DatabaseUtil {
         }
     }
 
+    // Kart bilgisini veritabanına ekler
     public static void insertCard(User user) {
         String sql = "INSERT INTO cards (user_email, card_name, card_number, cvc, exp_month, exp_year) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);

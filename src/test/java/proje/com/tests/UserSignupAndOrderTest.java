@@ -1,3 +1,5 @@
+// Tüm E2E akışı baştan sona test eden ana test sınıfı.
+// Her adımda random kullanıcı oluşturulur, form doldurulur, veritabanına kayıt yapılır, ürün eklenir, ödeme yapılır ve raporlanır.
 package proje.com.tests;
 
 import com.aventstack.extentreports.*;
@@ -25,11 +27,14 @@ import java.util.Date;
 import proje.com.util.Messages;
 
 public class UserSignupAndOrderTest extends BaseTest {
+    // ExtentReports raporlama nesneleri
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static ExtentHtmlReporter htmlReporter;
+    // Test için oluşturulan random kullanıcı
     private User user;
 
+    // Test sınıfı başlamadan önce raporlama ayarlarını yapar
     @BeforeClass
     public void setupReport() {
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("ExtentReport.html");
@@ -45,72 +50,74 @@ public class UserSignupAndOrderTest extends BaseTest {
         extentReports.setSystemInfo("Test Date", java.time.LocalDateTime.now().toString());
     }
 
+    // Ana test metodu - Tüm E2E akışını test eder
     @Test(description = "User Signup, Add Product, Cart Check, Payment")
     public void testUserSignupAndOrder() {
         String baseUrl = "https://automationexercise.com/";
         extentTest = extentReports.createTest("User Signup, Add Product, Cart Check, Payment");
         long startTime = System.currentTimeMillis();
         driver.get(baseUrl);
-        extentTest.info("<b style='color:#1976d2'>[NAVIGATION]</b> Siteye gidildi (<span style='color:#388e3c'>" + baseUrl + "</span>)");
+        extentTest.info(MarkupHelper.createLabel("[NAVIGATION] Siteye gidildi: " + baseUrl, ExtentColor.BLUE));
 
         HomePage homePage = new HomePage(driver);
         homePage.goToSignupLogin();
-        extentTest.info("<b style='color:#1976d2'>[NAVIGATION]</b> Signup/Login butonuna tıklandı.");
+        extentTest.info(MarkupHelper.createLabel("[NAVIGATION] Signup/Login butonuna tıklandı.", ExtentColor.BLUE));
 
         // Signup Bölümü
-        extentTest.info("<b style='color:#1976d2'>[SIGNUP]</b> Signup/Login sayfasına gidildi (<span style='color:#388e3c'>" + baseUrl + "login</span>)");
+        extentTest.info(MarkupHelper.createLabel("[SIGNUP] Signup/Login sayfasına gidildi: " + baseUrl + "login", ExtentColor.BLUE));
         SignupPage signupPage = new SignupPage(driver);
         user = RandomUserGenerator.generate();
         signupPage.signupBasic(user.name, user.email);
-        extentTest.info("<b>Kullanıcı Bilgileri:</b> Name=<span style='color:#1976d2'>" + user.name + "</span>, Email=<span style='color:#1976d2'>" + user.email + "</span>, Password=<span style='color:#1976d2'>" + user.password + "</span>");
+        extentTest.info(MarkupHelper.createLabel("Kullanıcı Bilgileri: Name=" + user.name + ", Email=" + user.email + ", Password=" + user.password, ExtentColor.BLUE));
         signupPage.fillAccountInfo(user);
-        extentTest.info("<b>Adres Bilgileri:</b> <span style='color:#388e3c'>" + user.firstName + " " + user.lastName + ", " + user.company + ", " + user.address1 + ", " + user.address2 + ", " + user.country + ", " + user.state + ", " + user.city + ", " + user.zipcode + ", " + user.mobileNumber + "</span>");
+        extentTest.info(MarkupHelper.createLabel("Adres Bilgileri: " + user.firstName + " " + user.lastName + ", " + user.company + ", " + user.address1 + ", " + user.address2 + ", " + user.country + ", " + user.state + ", " + user.city + ", " + user.zipcode + ", " + user.mobileNumber, ExtentColor.GREEN));
         DatabaseUtil.insertUser(user);
         DatabaseUtil.insertCard(user);
-        extentTest.info("<b>Kullanıcı ve kart bilgisi PostgreSQL'e kaydedildi:</b> [User: <span style='color:#1976d2'>" + user.email + "</span>, Card: <span style='color:#d32f2f'>" + user.cardNumber.substring(user.cardNumber.length()-4) + "</span>]");
+        extentTest.info(MarkupHelper.createLabel("Kullanıcı ve kart bilgisi PostgreSQL'e kaydedildi: User=" + user.email + ", Card=" + user.cardNumber.substring(user.cardNumber.length()-4), ExtentColor.GREEN));
         Assert.assertTrue(signupPage.isAccountCreatedMessageVisible(), Messages.ACCOUNT_CREATED + " mesajı görünmedi!");
-        extentTest.pass("<span style='color:#388e3c'>" + Messages.ACCOUNT_CREATED + "</span> mesajı başarıyla görüntülendi.");
+        extentTest.pass(MarkupHelper.createLabel(Messages.ACCOUNT_CREATED + " mesajı başarıyla görüntülendi.", ExtentColor.GREEN));
         signupPage.clickContinueAfterAccountCreated();
-        extentTest.info("Account Created sonrası Continue tıklandı, kullanıcı login oldu");
+        extentTest.info(MarkupHelper.createLabel("Account Created sonrası Continue tıklandı, kullanıcı login oldu", ExtentColor.BLUE));
 
         // Ürün ve Sepet Bölümü
-        extentTest.info("<b style='color:#1976d2'>[PRODUCT & CART]</b> Ürün ekleme ve sepet işlemleri başlıyor.");
+        extentTest.info(MarkupHelper.createLabel("[PRODUCT & CART] Ürün ekleme ve sepet işlemleri başlıyor.", ExtentColor.BLUE));
         ProductPage productPage = new ProductPage(driver);
         productPage.addFirstProductToCart();
-        extentTest.info("İlk ürün sepete eklendi (Add to cart butonuna tıklandı)");
+        extentTest.info(MarkupHelper.createLabel("İlk ürün sepete eklendi (Add to cart butonuna tıklandı)", ExtentColor.GREEN));
         productPage.goToCart();
-        extentTest.info("Sepete gidildi (<span style='color:#388e3c'>" + baseUrl + "view_cart</span>)");
+        extentTest.info(MarkupHelper.createLabel("Sepete gidildi: " + baseUrl + "view_cart", ExtentColor.GREEN));
         CartPage cartPage = new CartPage(driver);
         String productName = cartPage.getProductNameInCart();
         if (productName == null) {
-            extentTest.warning("<b style='color:#d32f2f'>Sepette ürün bulunamadı!</b>");
+            extentTest.warning(MarkupHelper.createLabel("Sepette ürün bulunamadı!", ExtentColor.RED));
         } else {
-            extentTest.pass("Sepette ürün bulundu: <b style='color:#388e3c'>" + productName + "</b>");
+            extentTest.pass(MarkupHelper.createLabel("Sepette ürün bulundu: " + productName, ExtentColor.GREEN));
         }
         cartPage.proceedToCheckout();
-        extentTest.info("Ödeme adımına geçildi (<span style='color:#388e3c'>" + baseUrl + "checkout</span>)");
+        extentTest.info(MarkupHelper.createLabel("Ödeme adımına geçildi: " + baseUrl + "checkout", ExtentColor.GREEN));
 
         // Ödeme Bölümü
-        extentTest.info("<b style='color:#1976d2'>[PAYMENT]</b> Ödeme işlemleri başlıyor.");
+        extentTest.info(MarkupHelper.createLabel("[PAYMENT] Ödeme işlemleri başlıyor.", ExtentColor.BLUE));
         PaymentPage paymentPage = new PaymentPage(driver);
         paymentPage.placeOrder();
-        extentTest.info("Place Order butonuna tıklandı");
-        extentTest.info("<b>Kart Bilgisi:</b> Name=<span style='color:#1976d2'>" + user.cardName + "</span>, Number=<span style='color:#d32f2f'>**** **** **** " + user.cardNumber.substring(user.cardNumber.length()-4) + "</span>, CVC=<span style='color:#1976d2'>" + user.cvc + "</span>, Exp=<span style='color:#1976d2'>" + user.expMonth + "/" + user.expYear + "</span>");
+        extentTest.info(MarkupHelper.createLabel("Place Order butonuna tıklandı", ExtentColor.BLUE));
+        extentTest.info(MarkupHelper.createLabel("Kart Bilgisi: Name=" + user.cardName + ", Number=**** **** **** " + user.cardNumber.substring(user.cardNumber.length()-4) + ", CVC=" + user.cvc + ", Exp=" + user.expMonth + "/" + user.expYear, ExtentColor.BLUE));
         paymentPage.fillAndSubmitPaymentForm(user);
-        extentTest.pass("Ödeme formu random kart bilgisiyle dolduruldu ve sipariş tamamlandı (simüle edildi)");
+        extentTest.pass(MarkupHelper.createLabel("Ödeme formu random kart bilgisiyle dolduruldu ve sipariş tamamlandı (simüle edildi)", ExtentColor.GREEN));
         Assert.assertTrue(paymentPage.isOrderConfirmedVisible(), "Order confirmation yazısı görünmedi!");
-        extentTest.pass("<span style='color:#388e3c'>Order confirmation yazısı başarıyla görüntülendi.</span>");
+        extentTest.pass(MarkupHelper.createLabel("Order confirmation yazısı başarıyla görüntülendi.", ExtentColor.GREEN));
         paymentPage.clickContinueAfterOrderPlaced();
-        extentTest.info("Order placed sonrası Continue tıklandı.");
+        extentTest.info(MarkupHelper.createLabel("Order placed sonrası Continue tıklandı.", ExtentColor.BLUE));
         paymentPage.clickLogout();
-        extentTest.info("Logout işlemi başarıyla yapıldı, test tamamlandı.");
+        extentTest.info(MarkupHelper.createLabel("Logout işlemi başarıyla yapıldı, test tamamlandı.", ExtentColor.GREEN));
 
         // Test Sonucu Özeti
         long endTime = System.currentTimeMillis();
         long duration = (endTime - startTime) / 1000;
-        extentTest.info("<b style='color:#1976d2'>[SUMMARY]</b> Test toplam süresi: <span style='color:#388e3c'>" + duration + " saniye</span> | Kullanıcı: <span style='color:#1976d2'>" + user.email + "</span> | Kart: <span style='color:#d32f2f'>****" + user.cardNumber.substring(user.cardNumber.length()-4) + "</span>");
+        extentTest.info(MarkupHelper.createLabel("[SUMMARY] Test toplam süresi: " + duration + " saniye | Kullanıcı: " + user.email + " | Kart: ****" + user.cardNumber.substring(user.cardNumber.length()-4), ExtentColor.BLUE));
     }
 
+    // Her test metodu sonrası çalışır - Başarı/başarısızlık durumunda screenshot alır
     @AfterMethod
     public void screenShotOnFailure(ITestResult result) {
         String methodName = result.getMethod().getMethodName();
@@ -136,6 +143,7 @@ public class UserSignupAndOrderTest extends BaseTest {
         }
     }
 
+    // Test sınıfı bittikten sonra raporu kaydeder
     @AfterClass
     public void tearDown() {
         if (extentReports != null) {
@@ -143,12 +151,14 @@ public class UserSignupAndOrderTest extends BaseTest {
         }
     }
 
+    // Screenshot dosya adını oluşturur
     private String getScreenshotName(String methodName) {
         Date d = new Date();
         String fileName = methodName + "_" + d.toString().replace(":", "_").replace(" ", "_") + ".png";
         return fileName;
     }
 
+    // Screenshot alır ve dosyaya kaydeder
     private String takeScreenshot(String methodName) {
         String fileName = getScreenshotName(methodName);
         String directory = "./Screenshot/";

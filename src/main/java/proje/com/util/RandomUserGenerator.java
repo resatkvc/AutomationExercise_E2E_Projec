@@ -1,3 +1,5 @@
+// Her testte random kullanıcı ve kart bilgisi üretir.
+// Testlerin tekrar tekrar çalışabilmesi ve veri çakışmaması için kullanılır.
 package proje.com.util;
 
 import proje.com.model.User;
@@ -5,10 +7,12 @@ import java.util.Random;
 import java.util.UUID;
 
 public class RandomUserGenerator {
+    // Rastgele başlık ve ülke listeleri
     private static final String[] titles = {"Mr", "Mrs"};
     private static final String[] countries = {"India", "Turkey", "USA", "Germany", "France"};
     private static final Random random = new Random();
 
+    // Rastgele User nesnesi üretir
     public static User generate() {
         User user = new User();
         user.title = titles[random.nextInt(titles.length)];

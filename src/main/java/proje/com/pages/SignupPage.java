@@ -1,3 +1,5 @@
+// Signup (kayıt) sayfası için Page Object sınıfı.
+// Form doldurma, hesap oluşturma ve doğrulama işlemleri burada.
 package proje.com.pages;
 
 import org.openqa.selenium.WebDriver;
@@ -10,6 +12,7 @@ import proje.com.model.User;
 import java.time.Duration;
 
 public class SignupPage extends BasePage {
+    // Temel signup form alanları
     @FindBy(xpath = "//input[@data-qa='signup-name']")
     private WebElement nameInput;
     @FindBy(xpath = "//input[@data-qa='signup-email']")
@@ -17,7 +20,7 @@ public class SignupPage extends BasePage {
     @FindBy(xpath = "//button[@data-qa='signup-button']")
     private WebElement signupButton;
 
-    // Account info
+    // Account info form alanları
     @FindBy(id = "id_gender1")
     private WebElement mrRadio;
     @FindBy(id = "id_gender2")
@@ -57,19 +60,23 @@ public class SignupPage extends BasePage {
     @FindBy(xpath = "//p[contains(text(),'Congratulations! Your new account has been successfully created!')]")
     private WebElement accountCreatedMessage;
 
+    // WebDriverWait nesnesi - güvenli etkileşim için
     private WebDriverWait wait;
 
+    // Constructor - BasePage'e WebDriver'ı geçer ve wait nesnesini başlatır
     public SignupPage(WebDriver driver) {
         super(driver);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    // Temel signup adımı (isim/email girip devam)
     public void signupBasic(String name, String email) {
         wait.until(ExpectedConditions.visibilityOf(nameInput)).sendKeys(name);
         wait.until(ExpectedConditions.visibilityOf(emailInput)).sendKeys(email);
         wait.until(ExpectedConditions.elementToBeClickable(signupButton)).click();
     }
 
+    // Tüm kullanıcı bilgilerini doldurur ve hesap oluşturur
     public void fillAccountInfo(User user) {
         if (user.title.equalsIgnoreCase("Mr")) {
             wait.until(ExpectedConditions.elementToBeClickable(mrRadio)).click();
@@ -93,10 +100,12 @@ public class SignupPage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(createAccountButton)).click();
     }
 
+    // Hesap oluşturulduktan sonra devam butonuna tıklar
     public void clickContinueAfterAccountCreated() {
         wait.until(ExpectedConditions.elementToBeClickable(continueButton)).click();
     }
 
+    // Hesap oluşturma mesajı görünüyor mu kontrolü
     public boolean isAccountCreatedMessageVisible() {
         return wait.until(ExpectedConditions.visibilityOf(accountCreatedMessage)).isDisplayed();
     }

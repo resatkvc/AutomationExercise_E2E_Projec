@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- AutomationExercise E2E Test Automation Project - Maven POM dosyası -->
+<!-- Bu proje, https://automationexercise.com sitesi üzerinde uçtan uca test otomasyonu yapmak için geliştirilmiştir -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Proje bilgileri -->
     <groupId>proje.com</groupId>
     <artifactId>AutomationExercise_E2E_Projec</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <!-- Java ve encoding ayarları -->
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- Proje bağımlılıkları -->
     <dependencies>
-        <!-- Selenium WebDriver -->
+        <!-- Selenium WebDriver - Web otomasyonu için ana kütüphane -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>4.19.1</version>
         </dependency>
-        <!-- TestNG -->
+        <!-- TestNG - Test framework'ü, test çalıştırma ve raporlama için -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.9.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- ExtentReports -->
+        <!-- ExtentReports - HTML test raporları oluşturmak için -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>4.1.7</version>
         </dependency>
-        <!-- PostgreSQL JDBC Driver -->
+        <!-- PostgreSQL JDBC Driver - Veritabanı bağlantısı için -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
-        <!-- WebDriverManager -->
+        <!-- WebDriverManager - Driver'ları otomatik yönetmek için -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>

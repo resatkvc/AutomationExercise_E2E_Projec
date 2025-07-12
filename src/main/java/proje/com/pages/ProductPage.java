@@ -1,3 +1,5 @@
+// Ürünler sayfası için Page Object sınıfı.
+// Ürün ekleme, sepete gitme işlemleri burada.
 package proje.com.pages;
 
 import org.openqa.selenium.WebDriver;
@@ -9,6 +11,7 @@ import proje.com.base.BasePage;
 import java.time.Duration;
 
 public class ProductPage extends BasePage {
+    // Ürün ekleme ve sepet butonları
     @FindBy(xpath = "(//a[contains(text(),'Add to cart')])[1]")
     private WebElement firstProductAddToCartButton;
     @FindBy(xpath = "//button[contains(text(),'Continue Shopping')]")
@@ -16,13 +19,16 @@ public class ProductPage extends BasePage {
     @FindBy(xpath = "//a[@href='/view_cart']")
     private WebElement viewCartButton;
 
+    // WebDriverWait nesnesi - güvenli etkileşim için
     private WebDriverWait wait;
 
+    // Constructor - BasePage'e WebDriver'ı geçer ve wait nesnesini başlatır
     public ProductPage(WebDriver driver) {
         super(driver);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    // İlk ürünü sepete ekler, devam et butonuna tıklar
     public void addFirstProductToCart() {
         wait.until(ExpectedConditions.elementToBeClickable(firstProductAddToCartButton));
         // Scroll ile butonu görünür yap
@@ -32,6 +38,7 @@ public class ProductPage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(continueShoppingButton)).click();
     }
 
+    // Sepet sayfasına gider
     public void goToCart() {
         wait.until(ExpectedConditions.elementToBeClickable(viewCartButton)).click();
     }
