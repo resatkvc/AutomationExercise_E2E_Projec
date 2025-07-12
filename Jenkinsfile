@@ -13,10 +13,6 @@ pipeline {
         POSTGRES_PASSWORD = 'testpass'
         POSTGRES_DB = 'testdb'
         POSTGRES_PORT = '5432'
-        
-        // Chrome ve ChromeDriver ayarları
-        CHROME_BIN = '/usr/bin/google-chrome'
-        CHROMEDRIVER_PATH = '/usr/local/bin/chromedriver'
     }
     
     stages {
@@ -24,62 +20,6 @@ pipeline {
             steps {
                 echo '🔄 Kod deposundan proje çekiliyor...'
                 checkout scm
-            }
-        }
-        
-        stage('Setup Chrome and ChromeDriver') {
-            steps {
-                script {
-                    echo '🌐 Chrome ve ChromeDriver kurulumu yapılıyor...'
-                    
-                    // Sistem paketlerini güncelle (sudo olmadan)
-                    sh '''
-                        apt-get update || true
-                    '''
-                    
-                    // Chrome kurulumu (sudo olmadan)
-                    sh '''
-                        if ! command -v google-chrome &> /dev/null; then
-                            echo "Chrome kuruluyor..."
-                            # Google Chrome repository key'ini ekle
-                            curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - || true
-                            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
-                            apt-get update
-                            apt-get install -y google-chrome-stable
-                        else
-                            echo "Chrome zaten kurulu"
-                        fi
-                    '''
-                    
-                    // ChromeDriver kurulumu (sudo olmadan)
-                    sh '''
-                        if ! command -v chromedriver &> /dev/null; then
-                            echo "ChromeDriver kuruluyor..."
-                            # Chrome versiyonunu al
-                            CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F'.' '{print $1}')
-                            echo "Chrome versiyonu: $CHROME_VERSION"
-                            
-                            # ChromeDriver'ı indir
-                            curl -L -o /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}/chromedriver_linux64.zip"
-                            unzip /tmp/chromedriver.zip -d /tmp/
-                            mv /tmp/chromedriver /usr/local/bin/
-                            chmod +x /usr/local/bin/chromedriver
-                            rm /tmp/chromedriver.zip
-                        else
-                            echo "ChromeDriver zaten kurulu"
-                        fi
-                    '''
-                    
-                    // Chrome ve ChromeDriver versiyonlarını kontrol et
-                    sh '''
-                        echo "Chrome versiyonu:"
-                        google-chrome --version || echo "Chrome bulunamadı"
-                        echo "ChromeDriver versiyonu:"
-                        chromedriver --version || echo "ChromeDriver bulunamadı"
-                    '''
-                    
-                    echo '✅ Chrome ve ChromeDriver kurulumu tamamlandı!'
-                }
             }
         }
         
@@ -127,6 +67,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Testler çalıştırılıyor...'
+                // WebDriverManager otomatik olarak driver'ı indirecek
                 sh 'mvn test'
             }
         }
