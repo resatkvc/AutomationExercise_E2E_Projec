@@ -282,18 +282,12 @@ docker rm jenkins-postgres-db
 ---
 
 ## Katkı
-- Katkıda bulunmak için fork’layıp PR gönderebilirsin.
+- Katkıda bulunmak için fork’layıp PR gönderebilirsiniz.
 
 ---
 
 ## İletişim
 Her türlü soru, öneri ve katkı için iletişime geçebilirsin.
-
----
-
-**Not:**
-- Proje, gerçek bir E2E test otomasyon framework’ü örneğidir ve kurumsal projelerde kullanılabilecek profesyonel bir altyapı sunar.
-- Kodun her adımı, loglar ve raporlar ile şeffaf şekilde izlenebilir ve geliştirilebilir.
 
 ---
 
