@@ -1,9 +1,9 @@
 pipeline {
-    agent any
-
-    tools {
-        maven 'Maven 3.9.6'
-        jdk 'jdk-17'
+    agent {
+        docker {
+            image 'maven:3.9.6-openjdk-17'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
     }
 
     environment {
@@ -34,17 +34,18 @@ pipeline {
                     
                     // Sistem paketlerini güncelle
                     sh '''
-                        sudo apt-get update || true
+                        apt-get update
+                        apt-get install -y wget unzip gnupg2
                     '''
                     
                     // Chrome kurulumu
                     sh '''
                         if ! command -v google-chrome &> /dev/null; then
                             echo "Chrome kuruluyor..."
-                            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-                            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-                            sudo apt-get update
-                            sudo apt-get install -y google-chrome-stable
+                            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+                            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
+                            apt-get update
+                            apt-get install -y google-chrome-stable
                         else
                             echo "Chrome zaten kurulu"
                         fi
@@ -57,8 +58,8 @@ pipeline {
                             CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | awk -F'.' '{print $1}')
                             wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION}/chromedriver_linux64.zip
                             unzip /tmp/chromedriver.zip -d /tmp/
-                            sudo mv /tmp/chromedriver /usr/local/bin/
-                            sudo chmod +x /usr/local/bin/chromedriver
+                            mv /tmp/chromedriver /usr/local/bin/
+                            chmod +x /usr/local/bin/chromedriver
                             rm /tmp/chromedriver.zip
                         else
                             echo "ChromeDriver zaten kurulu"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AutomationExercise E2E Test Suite" parallel="methods" thread-count="1">
+    
+    <test name="User Signup and Order Test">
+        <classes>
+            <class name="proje.com.tests.UserSignupAndOrderTest">
+                <methods>
+                    <include name="testUserSignupAndOrder"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <!-- TestNG raporlama ayarları -->
+    <listeners>
+        <listener class-name="org.testng.reporters.XMLReporter"/>
+        <listener class-name="org.testng.reporters.JUnitReportReporter"/>
+        <listener class-name="org.testng.reporters.EmailableReporter2"/>
+    </listeners>
+    
+</suite> 

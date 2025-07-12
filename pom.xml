@@ -53,4 +53,51 @@
         </dependency>
     </dependencies>
 
+    <!-- Build konfigürasyonu -->
+    <build>
+        <plugins>
+            <!-- Maven Surefire Plugin - Test çalıştırma için -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <!-- TestNG XML dosyasını kullan -->
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    
+                    <!-- Test çalıştırma ayarları -->
+                    <parallel>methods</parallel>
+                    <threadCount>1</threadCount>
+                    <useUnlimitedThreads>false</useUnlimitedThreads>
+                    
+                    <!-- Sistem özellikleri -->
+                    <systemPropertyVariables>
+                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                        <webdriver.chrome.bin>${webdriver.chrome.bin}</webdriver.chrome.bin>
+                    </systemPropertyVariables>
+                    
+                    <!-- Test başarısızlığında devam et -->
+                    <testFailureIgnore>false</testFailureIgnore>
+                    
+                    <!-- Test raporları -->
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                </configuration>
+            </plugin>
+            
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
