@@ -48,7 +48,7 @@ pipeline {
                     // Container'ın başlamasını bekle
                     sh '''
                         echo "PostgreSQL container başlatılıyor..."
-                        sleep 10
+                        sleep 20
                         docker ps | grep ${POSTGRES_CONTAINER_NAME}
                     '''
                     
@@ -82,8 +82,6 @@ pipeline {
                 // Screenshot klasörünü arşivle (varsa)
                 archiveArtifacts artifacts: 'Screenshot/**/*', fingerprint: true, allowEmptyArchive: true
                 
-                // TestNG raporlarını arşivle
-                publishTestNG results: '**/testng-results.xml', failureOnFailedTestConfig: false
             }
         }
         
