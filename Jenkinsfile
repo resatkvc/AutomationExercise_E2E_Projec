@@ -1,6 +1,11 @@
 pipeline {
     agent any
-    
+
+    tools {
+        maven 'Maven 3.9.6'
+        jdk 'jdk-17'
+    }
+
     environment {
         // PostgreSQL Docker container ayarları
         POSTGRES_CONTAINER_NAME = 'jenkins-postgres-db'
@@ -8,10 +13,6 @@ pipeline {
         POSTGRES_PASSWORD = 'testpass'
         POSTGRES_DB = 'testdb'
         POSTGRES_PORT = '5432'
-        
-        // Maven ayarları
-        MAVEN_HOME = tool 'Maven'
-        PATH = "${MAVEN_HOME}/bin:${env.PATH}"
     }
     
     stages {
