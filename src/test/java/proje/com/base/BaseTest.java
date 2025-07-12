@@ -16,6 +16,7 @@ public class BaseTest {
     // Her test metodu öncesi çalışır - WebDriver'ı başlatır
     @BeforeMethod
     public void setUp() {
+        // WebDriverManager otomatik olarak uygun driver'ı indirir
         WebDriverManager.chromedriver().setup();
         
         // Chrome options ayarları
@@ -31,21 +32,12 @@ public class BaseTest {
             options.addArguments("--remote-allow-origins=*");
         }
         
-        // Diğer güvenlik ve performans ayarları
+        // Temel güvenlik ayarları
         options.addArguments("--disable-extensions");
         options.addArguments("--disable-plugins");
-        options.addArguments("--disable-images");
-        options.addArguments("--disable-javascript");
         options.addArguments("--disable-web-security");
         options.addArguments("--allow-running-insecure-content");
         options.addArguments("--disable-blink-features=AutomationControlled");
-        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
-        
-        // Chrome binary path'i ayarla (Jenkins ortamında)
-        String chromeBin = System.getenv("CHROME_BIN");
-        if (chromeBin != null && !chromeBin.isEmpty()) {
-            options.setBinary(chromeBin);
-        }
         
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
