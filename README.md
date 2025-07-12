@@ -271,16 +271,6 @@ docker rm jenkins-postgres-db
 
 ---
 
-## Sık Karşılaşılan Sorunlar ve Çözümler
-- **Element bulunamıyor:** Doğru sayfada, doğru adımda olduğundan ve bekleme (wait) kullandığından emin ol.
-- **Veritabanı bağlantı hatası:** Docker container ayarlarını, port ve kullanıcı bilgilerini kontrol et.
-- **ExtentReport oluşmuyor:** Sürüm uyumsuzluğu veya FreeMarker hatası varsa 4.1.7 sürümünü kullan.
-- **Türkçe karakter sorunu:** Proje yolunda ve dosya adlarında Türkçe karakter kullanma.
-- **Test adımları atlanıyor:** Akış sırasını ve locator’ları gözden geçir.
-- **Jenkins pipeline hatası:** Docker ve Maven adımlarının doğru sırada ve ortamda çalıştığından emin ol.
-
----
-
 ## Katkı
 - Katkıda bulunmak için fork’layıp PR gönderebilirsiniz.
 
@@ -288,7 +278,3 @@ docker rm jenkins-postgres-db
 
 ## İletişim
 Her türlü soru, öneri ve katkı için iletişime geçebilirsin.
-
----
-
-**Her adımda terminal komutları ve açıklamalarla, yeni başlayan biri bile projeyi kolayca kurup çalıştırabilir!**
