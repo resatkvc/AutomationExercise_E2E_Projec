@@ -9,8 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseUtil {
-    // Veritabanı bağlantı bilgileri
-    private static final String URL = "jdbc:postgresql://localhost:5432/testdb";
+    // Veritabanı bağlantı bilgileri - Environment variable'dan port al
+    private static final String PORT = System.getProperty("POSTGRES_PORT", "5432");
+    private static final String URL = "jdbc:postgresql://localhost:" + PORT + "/testdb";
     private static final String USER = "testuser";
     private static final String PASSWORD = "testpass";
 
