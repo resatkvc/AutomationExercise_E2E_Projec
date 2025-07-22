@@ -1,5 +1,11 @@
 # AutomationExercise E2E Test Automation Project
 
+📖 Blog Yazısı  
+👉 Docker ile PostgreSQL kurulumunu ve IDE + PgAdmin entegrasyonunu adım adım anlattığım Blog yazım için aşağıdaki bağlantıdan inceleyebilirsiniz:  
+🔗 [**Docker Üzerinde PostgreSQL Kurulumu: IDE ile Entegrasyon ve PgAdmin ile Görsel Yönetim**](https://medium.com/@kavciresat/docker-%C3%BCzerinde-postgresql-kurulumu-ide-ile-entegrasyon-ve-pgadmin-ile-g%C3%B6rsel-y%C3%B6netim-2ba3ef059356)
+
+---
+
 ## Proje Hakkında
 Bu proje, [https://automationexercise.com](https://automationexercise.com) sitesi üzerinde uçtan uca (E2E) test otomasyonu yapmak için geliştirilmiştir. Java, Selenium WebDriver, TestNG, ExtentReports, PostgreSQL, Docker ve Jenkins teknolojileriyle, Page Object Model (POM) mimarisi kullanılarak hazırlanmıştır.
 
