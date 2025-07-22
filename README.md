@@ -249,11 +249,15 @@ docker rm jenkins-postgres-db
 ---
 
 ## Raporlama (ExtentReports)
-- Her test adımı detaylı ve renkli şekilde loglanır.
-- Başarısız adımlarda otomatik ekran görüntüsü alınır ve rapora eklenir.
+- **Merkezi Raporlama:** Tüm raporlama işlemleri `BaseTest` sınıfında merkezi olarak yönetilir
+- **Kod Tekrarını Önleme:** Yeni test sınıfları otomatik olarak raporlama özelliğini alır
+- **Tutarlı Raporlama:** Tüm testler aynı raporlama formatını kullanır
+- **Yardımcı Metodlar:** `logInfo()`, `logPass()`, `logWarning()`, `logFail()` metodları ile kolay loglama
+- Her test adımı detaylı ve renkli şekilde loglanır
+- Başarısız adımlarda otomatik ekran görüntüsü alınır ve rapora eklenir
 - Rapor dosyası: `ExtentReport.html` (proje kökünde)
-- Raporu tarayıcıda açarak adım adım testin nasıl ilerlediğini görebilirsin.
-- **Not:** Jenkins arayüzünde rapor sade görünebilir, tam renkli görünüm için dosyayı indirip tarayıcıda aç.
+- Raporu tarayıcıda açarak adım adım testin nasıl ilerlediğini görebilirsin
+- **Not:** Jenkins arayüzünde rapor sade görünebilir, tam renkli görünüm için dosyayı indirip tarayıcıda aç
 
 ---
 
